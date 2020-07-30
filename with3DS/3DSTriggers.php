@@ -1,24 +1,10 @@
 <?php
 require_once('vendor/autoload.php');
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
-
-// Create the logger
-$logger = new Logger('my_logger');
-// Now add some handlers
-$logger->pushHandler(new StreamHandler(__DIR__.'/my_app.log', Logger::DEBUG));
-
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
 
 $stripe = new \Stripe\StripeClient($_ENV['STRIPE_API_KEY']);
-
-$app = new \Slim\App;
-
-
-$logger->info('My logger is now ready');
 
 $card_details = [
   'number' => "4000002500003155",
@@ -45,5 +31,7 @@ echo $payment_intent;
 
 if ($payment_intent->next_action->type =="redirect_to_url") {
   $url = $payment_intent->next_action->redirect_to_url->url;
-  echo("\n\nPlease redirect your browser to: $url\n\n");
+  echo("\n\nPlease redirect customer's browser to: $url\n\n");
+} else {
+  echo("No need to redirect customer's browser");
 }
