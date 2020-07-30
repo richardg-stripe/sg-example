@@ -5,7 +5,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
 
 \Stripe\Stripe::setMaxNetworkRetries(3); // This will use idempotency keys for you
-$stripe = new \Stripe\StripeClient($_ENV['STRIPE_SECRET_KEY']);
+$stripe = new \Stripe\StripeClient($_ENV['STRIPE_API_KEY']);
 
 $payment_intent = $stripe->paymentIntents->create([
   'amount' => 4740,

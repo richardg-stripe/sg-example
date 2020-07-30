@@ -4,7 +4,7 @@ require_once('vendor/autoload.php');
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__, 1));
 $dotenv->load();
 
-$stripe = new \Stripe\StripeClient($_ENV['STRIPE_SECRET_KEY']);
+$stripe = new \Stripe\StripeClient($_ENV['STRIPE_API_KEY']);
 
 $card_details = [
   'number' => "4242424242424242",
