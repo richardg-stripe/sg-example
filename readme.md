@@ -2,9 +2,9 @@
 
 ## Prerequisites
 
-php 7
-composer
-[Stripe cli](https://stripe.com/docs/stripe-cli)
+- PHP 7
+- composer
+- [Stripe cli](https://stripe.com/docs/stripe-cli)
 
 ## Setup
 
