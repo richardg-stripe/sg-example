@@ -14,4 +14,14 @@
 
 ## Running
 
-make
+### No 3DS
+
+- `make no3DS`
+- `make refund`
+- `make no3DSBut3DSTriggers`
+
+### With 3DS
+
+- `make forwardWebhooks`
+- `make 3DSWebhooks`
+- `make trigger3DS`
