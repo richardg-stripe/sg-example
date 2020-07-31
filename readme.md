@@ -22,6 +22,11 @@
 
 ### With 3DS
 
+Open 3 terminals and open:
+
 - `make forwardWebhooks`
 - `make 3DSWebhooks`
+
+Then run and follow the instructions:
+
 - `make trigger3DS`

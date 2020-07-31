@@ -7,25 +7,31 @@ $dotenv->load();
 \Stripe\Stripe::setMaxNetworkRetries(3);
 $stripe = new \Stripe\StripeClient($_ENV['STRIPE_API_KEY']);
 
-$payment_intent = $stripe->paymentIntents->create([
-  'amount' => 4740,
-  'currency' => 'USD',
-  'confirm' => true,
-  'capture_method' => "manual",
-  'payment_method_types' => ['card'],
-  'payment_method_data' => [
-    'type' => "card",
-    'card' => [
-      // https://stripe.com/docs/testing#regulatory-cards
-      'number' => "4000002500003155", // Card triggers 3DS
-      'exp_month' => "02",
-      'exp_year' => "22",
-      'cvc' => "123"
-    ]
+$payment_method = $stripe->paymentMethods->create([
+  'type' => "card",
+  'card' => [
+    // https://stripe.com/docs/testing#regulatory-cards
+    'number' => "4000002500003155", // Card triggers 3DS
+    'exp_month' => "02",
+    'exp_year' => "22",
+    'cvc' => "123"
   ]
 ]);
 
-echo $payment_intent;
+$customer =$stripe->customers->create([
+  'name' => 'Dave Dave',
+  'payment_method' => $payment_method->id
+]);
+
+$payment_intent = $stripe->paymentIntents->create([
+  'amount' => 4740,
+  'currency' => 'USD',
+  'customer' => $customer->id,
+  'payment_method' => $payment_method->id,
+  'confirm' => true,
+  'capture_method' => "manual",
+  'payment_method_types' => ['card'],
+]);
 
 if ($payment_intent->status == 'requires_action') {
   echo "3DS was triggered, we cannot capture";

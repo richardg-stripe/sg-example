@@ -1,3 +1,7 @@
+#!make
+include .env
+export $(shell sed 's/=.*//' .env)
+
 .PHONY: no3DS
 
 install:
@@ -13,10 +17,10 @@ no3DSBut3DSTriggers:
 	php no3DS/3DSTriggers.php
 
 forwardWebhooks:
-	export $(grep -v '^#' .env | xargs) && stripe listen --forward-to localhost:8085/webhook
+	stripe listen --forward-to localhost:8085/webhook
 
 3DSWebhooks:
-	php -S 127.0.0.1:8085 3DS/3DSWebhooks.php
+	php -S 127.0.0.1:8085 with3DS/3DSWebhooks.php
 
 trigger3DS:
 	php with3DS/3DSTriggers.php
