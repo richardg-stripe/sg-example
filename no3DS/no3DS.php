@@ -55,6 +55,6 @@ $payment_intent_2 = $stripe->paymentIntents->create([
 
 echo "Created 2nd payment intent\n";
 
-$payment_intent = $stripe->paymentIntents->capture($payment_intent_2->id);
+$payment_intent_2 = $stripe->paymentIntents->capture($payment_intent_2->id);
 
 echo "Captured 2nd payment intent\n";

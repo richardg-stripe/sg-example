@@ -65,6 +65,7 @@ $app->post('/webhook', function(Request $request, Response $response) {
       'customer' => $customer_id,
       'type' => 'card',
     ])->first();
+
     $payment_intent_2 = $stripe->paymentIntents->create([
       'amount' => 4740,
       'currency' => 'USD',
