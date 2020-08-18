@@ -23,7 +23,7 @@ $customer =$stripe->customers->create([
   'payment_method' => $payment_method->id
 ]);
 
-$payment_intent = $stripe->setupIntents->create([
+$setup_intent = $stripe->setupIntents->create([
   'customer' => $customer->id,
   'payment_method' => $payment_method->id,
   'confirm' => true,
@@ -32,10 +32,10 @@ $payment_intent = $stripe->setupIntents->create([
   'return_url' => 'https://sg.com/paymentComplete'
 ]);
 
-echo $payment_intent;
+echo $setup_intent;
 
-if ($payment_intent->next_action->type =="redirect_to_url") {
-  $url = $payment_intent->next_action->redirect_to_url->url;
+if ($setup_intent->next_action->type =="redirect_to_url") {
+  $url = $setup_intent->next_action->redirect_to_url->url;
   echo("\n\nPlease redirect customer's browser to: $url\n\n");
 } else {
   echo("No need to redirect customer's browser");
