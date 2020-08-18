@@ -48,17 +48,11 @@ $app->post('/webhook', function(Request $request, Response $response) {
 
   $logger->info("event type: $type");
 
-  if ($type == 'payment_intent.amount_capturable_updated') {
+  if ($type == 'setup_intent.succeeded') {
     $logger->info($object);
-    $payment_intent_id = $object['id'];
-    $logger->info($payment_intent_id);
-
-    $payment_intent = $stripe->paymentIntents->capture($payment_intent_id);
-
-
 
     $logger->info("Time for next month's payment!");
-    $customer_id = $payment_intent->customer;
+    $customer_id = $object['customer'];
     $logger->info($customer_id);
 
     $saved_payment_method = $stripe->paymentMethods->all([
@@ -66,16 +60,30 @@ $app->post('/webhook', function(Request $request, Response $response) {
       'type' => 'card',
     ])->first();
 
-    $payment_intent_2 = $stripe->paymentIntents->create([
+    $payment_intent_1 = $stripe->paymentIntents->create([
       'amount' => 4740,
       'currency' => 'USD',
       'confirm' => true,
       'off_session' => true,
       'payment_method_types' => ['card'],
       'payment_method' => $saved_payment_method->id,
+      'capture_method' => "manual",
       'customer' => $customer_id
     ]);
+    $payment_intent_1 = $stripe->paymentIntents->capture($payment_intent_1->id);
 
+    // Next Month!
+    $payment_intent_2 = $stripe->paymentIntents->create([
+      'amount' => 5000,
+      'currency' => 'USD',
+      'confirm' => true,
+      'off_session' => true,
+      'payment_method_types' => ['card'],
+      'payment_method' => $saved_payment_method->id,
+      'capture_method' => "manual",
+      'customer' => $customer_id
+    ]);
+    $payment_intent_2 = $stripe->paymentIntents->capture($payment_intent_2->id);
   } else if ($type == 'payment_intent.succeeded') {
     // Fulfill any orders, e-mail receipts, etc
     // To cancel the payment you will need to issue a Refund (https://stripe.com/docs/api/refunds)
