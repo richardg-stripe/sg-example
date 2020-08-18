@@ -68,7 +68,6 @@ $app->post('/webhook', function(Request $request, Response $response) {
       'payment_method_types' => ['card'],
       'payment_method' => $saved_payment_method->id,
       'capture_method' => "manual",
-
       'customer' => $customer_id
     ]);
     $payment_intent_1 = $stripe->paymentIntents->capture($payment_intent_1->id);
