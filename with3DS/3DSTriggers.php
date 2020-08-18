@@ -23,15 +23,12 @@ $customer =$stripe->customers->create([
   'payment_method' => $payment_method->id
 ]);
 
-$payment_intent = $stripe->paymentIntents->create([
-  'amount' => 4740,
-  'currency' => 'USD',
+$payment_intent = $stripe->setupIntents->create([
   'customer' => $customer->id,
   'payment_method' => $payment_method->id,
   'confirm' => true,
-  'capture_method' => "manual",
   'payment_method_types' => ['card'],
-  'setup_future_usage' => "off_session",
+  'usage' => "off_session",
   'return_url' => 'https://sg.com/paymentComplete'
 ]);
 
